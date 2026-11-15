@@ -1,121 +1,270 @@
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SafetyDriverApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SafetyDriverApp extends StatelessWidget {
+  const SafetyDriverApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: WelcomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  static const Color navy = Color(0xFF101A2B);
+  static const Color mint = Color(0xFF18A582);
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      backgroundColor: const Color(0xFFD8E1E8),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth > 600;
+
+          return Center(
+            child: Container(
+              width: isWide ? 500 : double.infinity,
+              height: isWide ? 640 : constraints.maxHeight,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF172940),
+                    navy,
+                  ],
+                ),
+                borderRadius:
+                    BorderRadius.circular(isWide ? 34 : 0),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 42,
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: _buildWelcomeContent(),
+                        ),
+                      ),
+
+                      // Get started button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Next screen will be added soon',
+                                ),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mint,
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(15),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Get started',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 17),
+
+                      const Text(
+                        'AI-powered in-cabin safety monitoring',
+                        style: TextStyle(
+                          color: Color(0xFF91A8C0),
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildWelcomeContent() {
+    return SizedBox(
+      height: 340,
+      width: double.infinity,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Decorative circles
+          _circle(310),
+          _circle(235),
+          _circle(155),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 105,
+                height: 105,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1C414B),
+                  borderRadius: BorderRadius.circular(32),
+                  border: Border.all(
+                    color: const Color(0xFF326977),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.verified_user_outlined,
+                  color: Color(0xFF78DFC6),
+                  size: 51,
+                ),
+              ),
+
+              const SizedBox(height: 27),
+
+              const Text(
+                'Safety Driver',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: -1,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              const Text(
+                'Intelligent in-cabin protection\n'
+                'for every person on board.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF91BDD8),
+                  height: 1.6,
+                  fontSize: 13,
+                ),
+              ),
+
+              const SizedBox(height: 29),
+
+              const Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _InfoChip(
+                    icon: Icons.visibility_outlined,
+                    title: 'Driver',
+                  ),
+                  _InfoChip(
+                    icon: Icons.people_outline,
+                    title: 'Passengers',
+                  ),
+                  _InfoChip(
+                    icon: Icons.monitor_heart_outlined,
+                    title: 'Real time',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _circle(double size) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: const Color(0x1838BCA9),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+}
+
+class _InfoChip extends StatelessWidget {
+  final IconData icon;
+  final String title;
+
+  const _InfoChip({
+    required this.icon,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 11,
+        vertical: 10,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xFF203149),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: const Color(0xFF34455B),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: const Color(0xFF65D8C1),
+            size: 16,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFFAFCAE0),
+              fontSize: 11,
+            ),
+          ),
+        ],
       ),
     );
   }
