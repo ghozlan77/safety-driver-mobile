@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'login_screen.dart';
 
 void main() {
   runApp(const SafetyDriverApp());
@@ -67,15 +68,13 @@ class WelcomeScreen extends StatelessWidget {
                         height: 56,
                         child: ElevatedButton(
                           onPressed: () {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Next screen will be added soon',
-                                ),
-                              ),
-                            );
-                          },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const LoginScreen(),
+    ),
+  );
+},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: mint,
                             foregroundColor: Colors.white,
