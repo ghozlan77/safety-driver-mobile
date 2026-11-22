@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
-
+import 'home_dashboard.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -227,12 +227,15 @@ const SizedBox(height: 35),
                       height: 57,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            _showMessage(
-                              'Login UI ready. Backend integration pending.',
-                            );
-                          }
-                        },
+  if (_formKey.currentState!.validate()) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomeDashboardScreen(),
+      ),
+    );
+  }
+},
                         style: ElevatedButton.styleFrom(
                           backgroundColor: teal,
                           foregroundColor: Colors.white,
